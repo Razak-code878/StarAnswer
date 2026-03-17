@@ -11,35 +11,53 @@ from free_level import *
 
 router = Router()
 
+# Измени DATABASE_NAME или просто используй путь
+DATABASE_PATH = "/app/data/users_data.db"  # Путь, где есть права на запись
 
-
-# Подключаемся (файл создастся сам)
-# db = aiosqlite.connect("users_data.db")
-# cur = db.cursor()
-# cur.execute("CREATE TABLE IF NOT EXISTS accepted (user_id INTEGER PRIMARY KEY)")
-# db.commit()
 
 async def init_db():
-    async with aiosqlite.connect("users_data.db") as db:
+    async with aiosqlite.connect(DATABASE_PATH) as db:  # Используй полный путь
         await db.execute("CREATE TABLE IF NOT EXISTS accepted (user_id INTEGER PRIMARY KEY)")
         await db.commit()
 
+
 async def is_user_accepted(user_id):
-    async with aiosqlite.connect("users_data.db") as db:
+    async with aiosqlite.connect(DATABASE_PATH) as db:  # Используй полный путь
         async with db.execute("SELECT user_id FROM accepted WHERE user_id = ?", (user_id,)) as cursor:
             res = await cursor.fetchone()
             return res is not None
 
 
+
+@router.callback_query(F.data == "contin")
+async def contin(callback: CallbackQuery):
+    user_id = callback.from_user.id
+
+    await callback.answer("Принимаем оферту...")  # Снимаем зависание сразу
+
+    try:
+        async with aiosqlite.connect(DATABASE_PATH) as db:  # Используй полный путь
+            await db.execute("INSERT OR IGNORE INTO accepted (user_id) VALUES (?)", (user_id,))
+            await db.commit()
+
+        await callback.message.answer("Оферта принята! ✅")
+        await callback.message.answer("Чем могу помочь?", reply_markup=kb.main)
+
+    except Exception as e:
+        print(f"Ошибка в обработчике 'contin': {e}")
+        await callback.message.answer("Произошла ошибка при обработке запроса. Пожалуйста, попробуйте позже.")
+
+
+
 @router.message(CommandStart())
 async def start(message: Message):
-    async def start(message: Message):
-        user_id = message.from_user.id
+
+    user_id = message.from_user.id
 
         # ВАЖНО: добавлен await
-        if await is_user_accepted(user_id):
-            await message.answer("С возвращением! Чем займемся сегодня?", reply_markup=kb.main)
-            return
+    if await is_user_accepted(user_id):
+        await message.answer("С возвращением! Чем займемся сегодня?", reply_markup=kb.main)
+        return
 
     await message.answer(
         "Привет! Я **StarAnswersBot** 🎓 — твой быстрый помощник с учебой.\n\n"
@@ -62,14 +80,25 @@ async def start(message: Message):
 async def contin(callback: CallbackQuery):
     user_id = callback.from_user.id
 
-    # Асинхронная запись в базу данных
-    async with aiosqlite.connect("users_data.db") as db:
-        await db.execute("INSERT OR IGNORE INTO accepted (user_id) VALUES (?)", (user_id,))
-        await db.commit()
+    # Сначала отвечаем на callback, чтобы снять "зависание" кнопки.
+    # Можно отправить пустое сообщение, если не хочешь уведомления.
+    await callback.answer("Загрузка...")  # Или просто ""
 
-    # Сначала отвечаем на callback (убирает анимацию загрузки), потом шлем сообщение
-    await callback.answer("Оферта принята! ✅")
-    await callback.message.answer("Чем могу помочь?", reply_markup=kb.main)
+    try:
+        # Асинхронная запись в базу данных
+        async with aiosqlite.connect("users_data.db") as db:
+            await db.execute("INSERT OR IGNORE INTO accepted (user_id) VALUES (?)", (user_id,))
+            await db.commit()
+
+        # Отправляем сообщение после успешной обработки
+        await callback.message.answer("Оферта принята! ✅")
+        await callback.message.answer("Чем могу помочь?", reply_markup=kb.main)
+
+    except Exception as e:
+        # Если произошла ошибка, уведоми пользователя и залогируй её
+        print(f"Ошибка в обработчике 'contin': {e}")  # В логах хостинга это будет видно
+        await callback.message.answer("Произошла ошибка при обработке запроса. Пожалуйста, попробуйте позже.")
+
 
 @router.message(F.text == "📚 Шпаргалка")
 async def learn(message: Message):

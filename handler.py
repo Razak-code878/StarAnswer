@@ -4,6 +4,7 @@ from aiogram import Router, F
 import keyboard as kb
 from aiogram.types import LinkPreviewOptions # Импортируем для управления ссылками
 import aiosqlite
+import os
 
 import key_homew as kb_h
 from crib import *
@@ -11,8 +12,8 @@ from free_level import *
 
 router = Router()
 
-# Измени DATABASE_NAME или просто используй путь
-DATABASE_PATH = "/app/data/users_data.db"  # Путь, где есть права на запись
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE_PATH = os.path.join(BASE_DIR, "users_data.db")
 
 
 async def init_db():

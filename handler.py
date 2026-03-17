@@ -28,24 +28,25 @@ async def is_user_accepted(user_id):
             return res is not None
 
 
-
+# 2. Объединенный хендлер принятия оферты
 @router.callback_query(F.data == "contin")
 async def contin(callback: CallbackQuery):
     user_id = callback.from_user.id
 
-    await callback.answer("Принимаем оферту...")  # Снимаем зависание сразу
+    # Сразу убираем состояние загрузки на кнопке
+    await callback.answer()
 
     try:
-        async with aiosqlite.connect(DATABASE_PATH) as db:  # Используй полный путь
+        async with aiosqlite.connect(DATABASE_PATH) as db:
             await db.execute("INSERT OR IGNORE INTO accepted (user_id) VALUES (?)", (user_id,))
             await db.commit()
 
-        await callback.message.answer("Оферта принята! ✅")
-        await callback.message.answer("Чем могу помочь?", reply_markup=kb.main)
+        # Редактируем старое сообщение, чтобы не спамить
+        await callback.message.edit_text("Оферта принята! ✅\nЧем могу помочь?", reply_markup=kb.main)
 
     except Exception as e:
-        print(f"Ошибка в обработчике 'contin': {e}")
-        await callback.message.answer("Произошла ошибка при обработке запроса. Пожалуйста, попробуйте позже.")
+        print(f"Ошибка в БД: {e}")
+        await callback.message.answer("Ошибка доступа к базе данных.")
 
 
 
@@ -74,31 +75,6 @@ async def start(message: Message):
         parse_mode="Markdown", # Чтобы ссылка была кликабельной в тексте
         link_preview_options=LinkPreviewOptions(is_disabled=True) # Отключаем большой блок ссылки
     )
-
-
-@router.callback_query(F.data == "contin")
-async def contin(callback: CallbackQuery):
-    user_id = callback.from_user.id
-
-    # Сначала отвечаем на callback, чтобы снять "зависание" кнопки.
-    # Можно отправить пустое сообщение, если не хочешь уведомления.
-    await callback.answer("Загрузка...")  # Или просто ""
-
-    try:
-        # Асинхронная запись в базу данных
-        async with aiosqlite.connect("users_data.db") as db:
-            await db.execute("INSERT OR IGNORE INTO accepted (user_id) VALUES (?)", (user_id,))
-            await db.commit()
-
-        # Отправляем сообщение после успешной обработки
-        await callback.message.answer("Оферта принята! ✅")
-        await callback.message.answer("Чем могу помочь?", reply_markup=kb.main)
-
-    except Exception as e:
-        # Если произошла ошибка, уведоми пользователя и залогируй её
-        print(f"Ошибка в обработчике 'contin': {e}")  # В логах хостинга это будет видно
-        await callback.message.answer("Произошла ошибка при обработке запроса. Пожалуйста, попробуйте позже.")
-
 
 @router.message(F.text == "📚 Шпаргалка")
 async def learn(message: Message):

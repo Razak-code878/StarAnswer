@@ -16,13 +16,15 @@ Simple_cycle = InlineKeyboardMarkup(inline_keyboard=[
 
 # -- Medium_level of study --
 medium_main = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="№1: Вложенные условия ⭐️", callback_data="m_1")],
-    [InlineKeyboardButton(text="№2: Цикл в цикле 💎", callback_data="m_2")],
+    [InlineKeyboardButton(text="№1: Циклы 💎", callback_data="m_1")],
     [InlineKeyboardButton(text="⬅️ К уровням", callback_data="back_to_levels")]
 ])
 
 # -- Hard-level of study --
 hard_main = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="🏆 Контрольная: Циклы", callback_data="h_exam2")],
+    [InlineKeyboardButton(text="🏆«Цикл FOR»"
+                               "(5 карточек)", callback_data="h_exam2")],
+    [InlineKeyboardButton(text="СР «Цикл WHILE»"
+                               "(11 карточек)")],
     [InlineKeyboardButton(text="⬅️ К уровням", callback_data="back_to_levels")]
 ])

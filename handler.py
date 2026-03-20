@@ -43,13 +43,12 @@ async def contin(callback: CallbackQuery):
             await db.commit()
 
         # Редактируем старое сообщение, чтобы не спамить
-        await callback.message.edit_text("Оферта принята! ✅\nЧем могу помочь?", reply_markup=kb.main)
+        await callback.message.answer("Оферта принята! ✅\nЧем могу помочь?", reply_markup=kb.main)
+        await callback.message.delete()  # Чтобы старая оферта не мозолила глаза
 
     except Exception as e:
         print(f"Ошибка в БД: {e}")
         await callback.message.answer("Ошибка доступа к базе данных.")
-
-
 
 @router.message(CommandStart())
 async def start(message: Message):
@@ -156,6 +155,7 @@ async def teh_help(callback: CallbackQuery):
 Столкнулся с проблемой? Мы поможем!
 
 📩 Связь через Email: StarAnswers176@duck.com
+Анонимка: t.me/anonaskbot?start=wbhd66z
 
 Чтобы мы решили твой вопрос быстро, укажи в письме:
 
@@ -196,23 +196,16 @@ async def free(callback: CallbackQuery):
 
 @router.callback_query(F.data == "tasks_premium")
 async def premium(callback: CallbackQuery):
-    await callback.message.edit_text("""Тут задачи, на которых виснет полкласса.
+     await callback.message.edit_text("""🕒 Этот раздел находится в процессе доработки. 🔧
 
-Что ты получаешь:
-✅ Оптимальный код (робот не делает лишних движений).
-✅ Комментарии к каждой строчке.
-✅ Твое свободное время
-""",
-                                  reply_markup=kb_h.medium_main)
+Следите за обновлениями! ⏰""")
 
 @router.callback_query(F.data == "tasks_exam")
 async def exam(callback: CallbackQuery):
     await callback.message.edit_text("""🤫 Это твой 'билет' в спокойную четверть.
+Контрольные работы/Самостоятельные в Яндекс.Учебнике требуют идеальной логики. Мы подготовили решения, которые проходят проверку системы с первого раза.
 
-Контрольные работы в Яндекс.Учебнике требуют идеальной логики. Мы подготовили решения, которые проходят проверку системы с первого раза.
-
-Бонус: Если препод спросит, почему ты так быстро решил — внутри есть краткая 'шпаргалка-объяснение' алгоритма""",
-                                  reply_markup=kb_h.hard_main)
+Бонус: Если препод спросит, почему ты так быстро решил — внутри есть краткая 'шпаргалка-объяснение' алгоритма""")
 
 @router.message(F.text == "💎 Баланс (TON)")
 async def tone(message: Message):
@@ -261,6 +254,10 @@ async def simp_cyc2(callback: CallbackQuery):
     await callback.message.answer(f"№3\n{simp_cyc2_3}")
     await callback.message.answer(f"№4\n{simp_cyc2_4}")
     await callback.answer()
+
+# @router.callback_query(F.data == "m_1")
+# async def m_1(callback: CallbackQuery):
+#     await callback.message.edit_text()
 
 
 

@@ -5,9 +5,10 @@ from aiogram import Router, F, types
 import keyboard as kb
 from aiogram.types import LinkPreviewOptions # Импортируем для управления ссылками
 import os
+import aiosqlite
 
 # from aiocryptopay import AioCryptoPay, Networks
-# import aiosqlite
+
 
 
 import key_homew as kb_h

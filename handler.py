@@ -4,10 +4,11 @@ from aiogram.types import Message, CallbackQuery, PreCheckoutQuery, LabeledPrice
 from aiogram import Router, F, types
 import keyboard as kb
 from aiogram.types import LinkPreviewOptions # Импортируем для управления ссылками
-#import aiosqlite
 import os
-from aiocryptopay import AioCryptoPay, Networks
-import datetime
+
+# from aiocryptopay import AioCryptoPay, Networks
+# import aiosqlite
+
 
 import key_homew as kb_h
 from crib import *

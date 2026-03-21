@@ -1,14 +1,17 @@
 from aiogram.filters import CommandStart
-from aiogram.types import Message, CallbackQuery
-from aiogram import Router, F
+from aiogram.types import Message, CallbackQuery, PreCheckoutQuery, LabeledPrice
+from aiogram import Router, F, types
 import keyboard as kb
 from aiogram.types import LinkPreviewOptions # Импортируем для управления ссылками
 import aiosqlite
 import os
+from aiocryptopay import AioCryptoPay, Networks
+import datetime
 
 import key_homew as kb_h
 from crib import *
 from free_level import *
+from hard_level import *
 
 router = Router()
 
@@ -201,7 +204,8 @@ async def free(callback: CallbackQuery):
 async def premium(callback: CallbackQuery):
      await callback.message.edit_text("""🕒 Этот раздел находится в процессе доработки. 🔧
 
-Следите за обновлениями! ⏰""")
+Следите за обновлениями! ⏰""",
+                                      reply_markup=kb_h.medium_main)
 
 @router.callback_query(F.data == "tasks_exam")
 async def exam(callback: CallbackQuery):
@@ -262,15 +266,86 @@ async def simp_cyc2(callback: CallbackQuery):
     await callback.answer()
 
 # Платная доиашняя работа
-
+"""Пока нет"""
 # Самостоятельные/КР
 @router.callback_query(F.data == "h_exam1")
 async def h_exam1(callback: CallbackQuery):
-    pass
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC6mm-1Al0FzFMXb989W4V9jtEiazCAAKNGmsblLb5SUE_EmfmhveyAQADAgADeAADOgQ",
+                                        caption=f"#1\n{hard_for1_1}")
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC7Gm-1FamzR9e0V44dwcF02PGXU2gAAKPGmsblLb5ScGbChdDP-nXAQADAgADeAADOgQ",
+                                        caption=f"#2\n{hard_for1_2}")
+    await callback.message.answer_invoice(
+        title="🏆 Задание на оценку «Цикл FOR»",
+        description="Решение (полный доступ)",
+        payload="ret_h_exam1",
+        provider_token="",
+        currency="XTR",
+        prices=[
+            types.LabeledPrice(label="Доступ к оставшемся заданиям", amount=59)
+        ],
+        # Можно добавить фото товара, чтобы выглядело круче
+        photo_url="", # 3 в 1 ФОТО
+        photo_size=512,
+        photo_width=512,
+        photo_height=512
+    )
+    await callback.answer()
 
 @router.callback_query(F.data == "h_exam2")
 async def h_exam2(callback: CallbackQuery):
-    pass
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC9mm-2ktHwqmID-I5aBU5yUUh6CjHAAKtGmsblLb5SVIxykV6FXzCAQADAgADeAADOgQ",
+                                        caption=f"#1\n{hard_while1_1}")
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC-Gm-2nZkruYAAU1Tz5Tr4jVEqmzk7wACrhprG5S2-Uk2zyla1HtJ5wEAAwIAA3gAAzoE",
+                                        caption=f"#2\n{hard_while1_2}")
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC-mm-2qMvTeNgT7fRyW-xqkwGnRioAAKxGmsblLb5STYpBpDXr7SHAQADAgADeAADOgQ",
+                                        caption=f"#3\n{hard_while1_3}")
+    await callback.message.answer_invoice(
+        title="🏆 СР «Цикл WHILE»",
+        description="Решение (полный доступ)",
+        payload="ret_h_exam2",
+        provider_token="",
+        currency="XTR",
+        prices=[
+            types.LabeledPrice(label="Доступ к оставшемся заданиям", amount=59)
+        ],
+        # Можно добавить фото товара, чтобы выглядело круче
+        photo_url="", # 3 в 1 ФОТО
+        photo_size=512,
+        photo_width=512,
+        photo_height=512
+    )
+    await callback.answer()
+
+# 7. ПОДТВЕРЖДЕНИЕ (Pre-Checkout Query) - без него оплата не пройдет
+@router.pre_checkout_query()
+async def process_pre_checkout_query(pre_checkout_query: PreCheckoutQuery):
+    await pre_checkout_query.answer(ok=True)
+
+
+@router.message(F.successful_payment)
+async def payment(message: Message):
+    payload = message.successful_payment.invoice_payload
+
+    await message.answer(f"🎉 Оплата {message.successful_payment.total_amount} ⭐ принята!")
+    print(f"ID пользователя: {message.from_user.id}, Куплено: {payload} ")
+
+    if payload == "ret_h_exam1":
+        await message.answer(f"#3\n{hard_for1_3}")
+        await message.answer(f"#4\n{hard_for1_4}")
+        await message.answer(f"#5\n{hard_for1_5}")
+    elif payload == "ret_h_exam2":
+        await message.answer(f"#4\n{hard_while1_4}")
+        await message.answer(f"#5\n{hard_while1_5}")
+        await message.answer(f"#6\n{hard_while1_6}")
+        await message.answer(f"#7\n{hard_while1_7}")
+        await message.answer(f"#8\n{hard_while1_8}")
+        await message.answer(f"#9\n{hard_while1_9}")
+        await message.answer(f"#10\n{hard_while1_10}")
+        await message.answer(f"#11\n{hard_while1_11}")
+
+# Оплата с помощью TON
+
+# crypto = AioCryptoPay(token=CRYPTO_TOKEN, network=Networks.MAIN_NET)
 
 
 

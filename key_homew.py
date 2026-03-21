@@ -16,7 +16,6 @@ Simple_cycle = InlineKeyboardMarkup(inline_keyboard=[
 
 # -- Medium_level of study --
 medium_main = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="№1: Циклы 💎", callback_data="m_1")],
     [InlineKeyboardButton(text="⬅️ К уровням", callback_data="back_to_levels")]
 ])
 

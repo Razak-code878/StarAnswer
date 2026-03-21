@@ -22,9 +22,9 @@ medium_main = InlineKeyboardMarkup(inline_keyboard=[
 
 # -- Hard-level of study --
 hard_main = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text="🏆«Цикл FOR»"
-                               "(5 карточек)", callback_data="h_exam2")],
-    [InlineKeyboardButton(text="СР «Цикл WHILE»"
-                               "(11 карточек)")],
+    [InlineKeyboardButton(text="🏆 Задание на оценку «Цикл FOR»"
+                               "(5 карточек)", callback_data="h_exam1")],
+    [InlineKeyboardButton(text="🏆 СР «Цикл WHILE»"
+                               "(11 карточек)", callback_data="h_exam2")],
     [InlineKeyboardButton(text="⬅️ К уровням", callback_data="back_to_levels")]
 ])

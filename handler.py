@@ -76,6 +76,7 @@ async def start(message: Message):
         link_preview_options=LinkPreviewOptions(is_disabled=True) # Отключаем большой блок ссылки
     )
 
+# 3. Шпаргалка
 @router.message(F.text == "📚 Шпаргалка")
 async def learn(message: Message):
     if not await is_user_accepted(message.from_user.id):
@@ -98,6 +99,7 @@ async def sring(callback: CallbackQuery):
     await callback.message.answer(STRING1)
     await callback.message.answer(STRING2)
 
+# 4. Информация
 @router.message(F.text == "⚙️ Настройки/Инфо")
 async def info_handler(message: Message):
     # Проверка на оферту (как в других твоих хендлерах)
@@ -167,6 +169,7 @@ async def teh_help(callback: CallbackQuery):
 
 Мы отвечаем в течение дня. Твои данные используются только для решения проблемы и не хранятся после закрытия вопроса.""")
 
+# 5. Решить робота
 @router.message(F.text == "🚀 Решить Робота")
 async def decisions(message: Message):
     if not await is_user_accepted(message.from_user.id):
@@ -205,8 +208,10 @@ async def exam(callback: CallbackQuery):
     await callback.message.edit_text("""🤫 Это твой 'билет' в спокойную четверть.
 Контрольные работы/Самостоятельные в Яндекс.Учебнике требуют идеальной логики. Мы подготовили решения, которые проходят проверку системы с первого раза.
 
-Бонус: Если препод спросит, почему ты так быстро решил — внутри есть краткая 'шпаргалка-объяснение' алгоритма""")
+Бонус: Если препод спросит, почему ты так быстро решил — внутри есть краткая 'шпаргалка-объяснение' алгоритма""",
+                                     reply_markup=kb_h.hard_main)
 
+# 6. Баланс\Приглашения
 @router.message(F.text == "💎 Баланс (TON)")
 async def tone(message: Message):
     if not await is_user_accepted(message.from_user.id):
@@ -238,28 +243,34 @@ async def f_1(callback: CallbackQuery):
 👇""",
                                      reply_markup=kb_h.Simple_cycle,)
 
+# Бесплатная домашняя работа
 @router.callback_query(F.data == "simp_cyc1")
 async def simp_cyc1(callback: CallbackQuery):
-    await callback.message.answer(f"№1\n{simp_cyc1_1}")
-    await callback.message.answer(f"№2\n{simp_cyc1_2}")
-    await callback.message.answer(f"№3\n{simp_cyc1_3}")
-    await callback.message.answer(f"№4\n{simp_cyc1_4}")
-    await callback.message.answer(f"№5\n{simp_cyc1_5}")
+    await callback.message.answer(f"#№1\n{simp_cyc1_1}")
+    await callback.message.answer(f"#№2\n{simp_cyc1_2}")
+    await callback.message.answer(f"#№3\n{simp_cyc1_3}")
+    await callback.message.answer(f"#№4\n{simp_cyc1_4}")
+    await callback.message.answer(f"#№5\n{simp_cyc1_5}")
     await callback.answer()
 
 @router.callback_query(F.data == "simp_cyc2")
 async def simp_cyc2(callback: CallbackQuery):
-    await callback.message.answer(f"№1\n{simp_cyc2_1}")
-    await callback.message.answer(f"№2\n{simp_cyc2_2}")
-    await callback.message.answer(f"№3\n{simp_cyc2_3}")
-    await callback.message.answer(f"№4\n{simp_cyc2_4}")
+    await callback.message.answer(f"#№1\n{simp_cyc2_1}")
+    await callback.message.answer(f"#№2\n{simp_cyc2_2}")
+    await callback.message.answer(f"#№3\n{simp_cyc2_3}")
+    await callback.message.answer(f"#№4\n{simp_cyc2_4}")
     await callback.answer()
 
-# @router.callback_query(F.data == "m_1")
-# async def m_1(callback: CallbackQuery):
-#     await callback.message.edit_text()
+# Платная доиашняя работа
 
+# Самостоятельные/КР
+@router.callback_query(F.data == "h_exam1")
+async def h_exam1(callback: CallbackQuery):
+    pass
 
+@router.callback_query(F.data == "h_exam2")
+async def h_exam2(callback: CallbackQuery):
+    pass
 
 
 

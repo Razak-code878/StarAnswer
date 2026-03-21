@@ -13,8 +13,7 @@ main = ReplyKeyboardMarkup(keyboard=[
 learn = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="✅ Условия (if/else)", callback_data="conditional")],
     [InlineKeyboardButton(text="🔁 Циклы (while/for)", callback_data="cycle")],
-    [InlineKeyboardButton(text="💬 Строки и Робот", callback_data="strings")],
-    [InlineKeyboardButton(text="⬅️ Назад", callback_data="back_to_main")]
+    [InlineKeyboardButton(text="💬 Строки и Робот", callback_data="strings")]
 ])
 
 topic = InlineKeyboardMarkup(inline_keyboard=[

@@ -76,7 +76,9 @@ async def start(message: Message):
         "Нажимая кнопку «Продолжить», вы подтверждаете, что ознакомились и принимаете условия "
         "[Публичной оферты](https://telegra.ph/Publichnaya-oferta-na-ispolzovanie-servisa-StarAnswersBot-02-15) "
         "и подтверждаете свою дееспособность.\n\n"
-        "По всем вопросам: StarAnswers176@duck.com",
+        "По всем вопросам: StarAnswers176@duck.com"
+        "\n"
+        "⚠️ Бот не является официальным проектом Яндекса.",
         reply_markup=kb.offerta,
         parse_mode="Markdown", # Чтобы ссылка была кликабельной в тексте
         link_preview_options=LinkPreviewOptions(is_disabled=True) # Отключаем большой блок ссылки
@@ -153,7 +155,9 @@ async def money_quest(cal: CallbackQuery):
 @router.callback_query(F.data == "privacy")
 async def privacy(cal: CallbackQuery):
     await cal.message.answer("""🛡️ Это безопасно? Меня не вычислят?
-Ответ: Нам не нужны твои ФИО, номер школы или телефон. Оплата в TON или Stars не видна в банковской истории твоих родителей (никаких чеков «За ГДЗ» в приложении банка). Для всех ты просто «инкогнито», который очень хорошо шарит в информатике.""")
+Ответ: Нам не нужны твои ФИО, номер школы или телефон. Оплата в TON или Stars не видна в банковской истории твоих родителей (никаких чеков «За ГДЗ» в приложении банка). Для всех ты просто «инкогнито», который очень хорошо шарит в информатике.
+
+⚠️ Важно: Данный проект является независимой частной разработкой и не аффилирован с компанией ООО «ЯНДЕКС» или сервисом «Яндекс Учебник».""")
 
 
 @router.callback_query(F.data == "break")
@@ -254,7 +258,7 @@ async def back_to_levels(callback: CallbackQuery):
 @router.callback_query(F.data == "f_1")
 async def f_1(callback: CallbackQuery):
     await callback.message.edit_text("""Выберите работу ниже
-👇""",
+👇(Не является официальным сервисом Яндекса)""",
                                      reply_markup=kb_h.Simple_cycle,)
 
 # Бесплатная домашняя работа

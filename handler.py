@@ -280,9 +280,9 @@ async def simp_cyc2(callback: CallbackQuery):
 # Самостоятельные/КР
 @router.callback_query(F.data == "h_exam1")
 async def h_exam1(callback: CallbackQuery):
-    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC6mm-1Al0FzFMXb989W4V9jtEiazCAAKNGmsblLb5SUE_EmfmhveyAQADAgADeAADOgQ",
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIEzmm--81O7RHIVA2Oacpn1L3SJgbcAAJQF2sbs475SarJ2k2r6IMSAQADAgADeAADOgQ",
                                         caption=f"#1\n{hard_for1_1}")
-    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC7Gm-1FamzR9e0V44dwcF02PGXU2gAAKPGmsblLb5ScGbChdDP-nXAQADAgADeAADOgQ",
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIE0Gm--_-jIauAwOYKCEUVM_EKy0kgAAJSF2sbs475SURCeRLlKW0-AQADAgADeAADOgQ",
                                         caption=f"#2\n{hard_for1_2}")
     await callback.message.answer_invoice(
         title="🏆 Задание на оценку «Цикл FOR»",
@@ -303,11 +303,11 @@ async def h_exam1(callback: CallbackQuery):
 
 @router.callback_query(F.data == "h_exam2")
 async def h_exam2(callback: CallbackQuery):
-    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC9mm-2ktHwqmID-I5aBU5yUUh6CjHAAKtGmsblLb5SVIxykV6FXzCAQADAgADeAADOgQ",
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIE0mm-_CTmdHZ_wOAkF9RX74llqxTKAAKtGmsblLb5SXuibtdGPc_3AQADAgADeAADOgQ",
                                         caption=f"#1\n{hard_while1_1}")
-    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC-Gm-2nZkruYAAU1Tz5Tr4jVEqmzk7wACrhprG5S2-Uk2zyla1HtJ5wEAAwIAA3gAAzoE",
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIE1Gm-_DrdYv9GU1yDDfZOgdEsXYiAAAJTF2sbs475STIxrl71pzKNAQADAgADeAADOgQ",
                                         caption=f"#2\n{hard_while1_2}")
-    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIC-mm-2qMvTeNgT7fRyW-xqkwGnRioAAKxGmsblLb5STYpBpDXr7SHAQADAgADeAADOgQ",
+    await callback.message.answer_photo(photo="AgACAgIAAxkBAAIE1mm-_EO8x26MVV8dbWgAAeL3aYqLcwACsRprG5S2-UmlSV3BrMALkQEAAwIAA3gAAzoE",
                                         caption=f"#3\n{hard_while1_3}")
     await callback.message.answer_invoice(
         title="🏆 СР «Цикл WHILE»",
@@ -352,6 +352,11 @@ async def payment(message: Message):
         await message.answer(f"#9\n{hard_while1_9}")
         await message.answer(f"#10\n{hard_while1_10}")
         await message.answer(f"#11\n{hard_while1_11}")
+
+# @router.message(F.photo)
+# async def get_photo_id(message: Message):
+#     await message.answer(f"ID твоего фото: `{message.photo[-1].file_id}`", parse_mode="Markdown")
+
 
 # Оплата с помощью TON
 

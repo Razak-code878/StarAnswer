@@ -1,3 +1,4 @@
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, PreCheckoutQuery, LabeledPrice
 from aiogram import Router, F, types
@@ -207,13 +208,20 @@ async def premium(callback: CallbackQuery):
 Следите за обновлениями! ⏰""",
                                       reply_markup=kb_h.medium_main)
 
+
 @router.callback_query(F.data == "tasks_exam")
 async def exam(callback: CallbackQuery):
-    await callback.message.edit_text("""🤫 Это твой 'билет' в спокойную четверть.
-Контрольные работы/Самостоятельные в Яндекс.Учебнике требуют идеальной логики. Мы подготовили решения, которые проходят проверку системы с первого раза.
+    try:
+        # Пытаемся обновить
+        await callback.message.edit_text(
+            "🤫 Это твой 'билет' в спокойную четверть...",
+            reply_markup=kb_h.hard_main
+        )
+    except TelegramBadRequest:
+        pass
 
-Бонус: Если препод спросит, почему ты так быстро решил — внутри есть краткая 'шпаргалка-объяснение' алгоритма""",
-                                     reply_markup=kb_h.hard_main)
+    # Обязательно отвечаем на колбэк, чтобы убрать "часики" с кнопки
+    await callback.answer()
 
 # 6. Баланс\Приглашения
 @router.message(F.text == "💎 Баланс (TON)")
